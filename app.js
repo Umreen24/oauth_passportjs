@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
     res.render('home')
 });
 
+// server
 app.listen(port, () => {
     console.log(`server is listenting on port ${port}!`)
 });

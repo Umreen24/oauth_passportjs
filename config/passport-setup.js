@@ -8,8 +8,10 @@ const clientSecret = process.env.clientSecret
 passport.use(
     new GoogleStrategy({
     //options for google strategy
+    callbackURL: '/auth/google/redirect',
     clientID: clientID,
     clientSecret: clientSecret
-}), () => {
+}, () => {
     //passport callback function
 })
+)

@@ -12,13 +12,13 @@ authRouter.get('/logout', (req, res) => {
     res.send('logging out')
 });
 
-// auth with Google
+// auth with Google+
 authRouter.get('/google', passport.authenticate('google', {
     scope: ['profile']
 }));
 
 //callback route for google to redirect to
-authRouter.get('/google/redirect', (req, res) => {
+authRouter.get('/google/redirect', passport.authenticate('google'), (req, res) => {
     res.send('you reached the callback uri')
 });
 

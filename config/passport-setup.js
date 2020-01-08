@@ -2,8 +2,8 @@ require('dotenv').config();
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-const clientID = process.env.clientID
-const clientSecret = process.env.clientSecret
+const clientID = process.env.clientID;
+const clientSecret = process.env.clientSecret;
 const User = require('../models/user');
 
 passport.use(
@@ -13,14 +13,22 @@ passport.use(
     clientID: clientID,
     clientSecret: clientSecret
 }, (accessToken, refreshToken, profile, done) => {
-    //passport callback function
-    console.log('passport callback function fired')
-    console.log(profile)
-    new User({
-        username: profile.displayName,
-        googleId: profile.id
-    }).save()
-    .then((newUser) => {
-        console.log('new user created: ' + newUser)
-    });
+    //check if user already exists in db
+    User.findOne({googleId: profile.id})
+    .then((currentUser) => {
+        if(currentUser) {
+            // user already registered
+            console.log('user exists: ' + currentUser)
+        } else {
+            // create new user
+            new User({
+                username: profile.displayName,
+                googleId: profile.id
+            })
+            .save()
+            .then((newUser) => {
+                console.log('new user created: ' + newUser)
+            })
+        }
+    })
 }));

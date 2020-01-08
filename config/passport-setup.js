@@ -19,6 +19,7 @@ passport.deserializeUser((id, done) => {
     })
 });
 
+// passport Google Strategy setup
 passport.use(
     new GoogleStrategy({
     //options for google strategy
@@ -31,17 +32,16 @@ passport.use(
     .then((currentUser) => {
         if(currentUser) {
             // user already registered
-            console.log('user already registered: ' + currentUser)
             done(null, currentUser)
         } else {
             // create new user
             new User({
                 username: profile.displayName,
-                googleId: profile.id
+                googleId: profile.id,
+                thumbnail: profile._json.picture 
             })
             .save()
             .then((newUser) => {
-                console.log('new user created: ' + newUser)
                 done(null, newUser)
             })
         }

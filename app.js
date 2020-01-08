@@ -8,6 +8,7 @@ const app = express();
 const port = process.env.port;
 
 const authRoute = require('./routes/auth-routes');
+const profileRoute = require('./routes/profile-routes');
 const passportSetup = require('./config/passport-setup');
 
 // mongodb setup
@@ -39,6 +40,7 @@ app.use(passport.session());
 
 // routes
 app.use('/auth', authRoute);
+app.use('/profile', profileRoute);
 
 // root route 
 app.get('/', (req, res) => {

@@ -4,6 +4,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const clientID = process.env.clientID
 const clientSecret = process.env.clientSecret
+const User = require('../models/user');
 
 passport.use(
     new GoogleStrategy({
@@ -15,5 +16,11 @@ passport.use(
     //passport callback function
     console.log('passport callback function fired')
     console.log(profile)
-})
-)
+    new User({
+        username: profile.displayName,
+        googleId: profile.id
+    }).save()
+    .then((newUser) => {
+        console.log('new user created: ' + newUser)
+    });
+}));

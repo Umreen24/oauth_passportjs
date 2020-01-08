@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+
 const app = express();
 const port = 3000;
 
@@ -25,6 +28,14 @@ app.set('view engine', 'ejs');
 
 // set static folder
 app.use(express.static('public'));
+
+// initial passport and cookie setup
+app.use(cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [process.env.cookieKey]
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes
 app.use('/auth', authRoute);

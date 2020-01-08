@@ -6,10 +6,12 @@ const clientID = process.env.clientID;
 const clientSecret = process.env.clientSecret;
 const User = require('../models/user');
 
+// grab specific info from user, put info in cookie, and send on to the next stage of auth
 passport.serializeUser((user, done) => {
     done(null, user.id)
 });
 
+// find user by id and send on to the next stage of auth
 passport.deserializeUser((id, done) => {
     User.findById(id)
     .then((user) => {

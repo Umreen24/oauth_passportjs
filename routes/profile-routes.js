@@ -12,7 +12,7 @@ const authCheck = (req, res, next) => {
 };
 
 profileRouter.get('/', authCheck, (req, res) => {
-    res.send('you are logged in and this your profile: ' + req.user.username)
+    res.render('profile', {user: req.user})
 });
 
 module.exports = profileRouter;

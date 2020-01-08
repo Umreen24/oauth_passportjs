@@ -6,6 +6,17 @@ const clientID = process.env.clientID;
 const clientSecret = process.env.clientSecret;
 const User = require('../models/user');
 
+passport.serializeUser((user, done) => {
+    done(null, user.id)
+});
+
+passport.deserializeUser((id, done) => {
+    User.findById(id)
+    .then((user) => {
+        done(null, user)
+    })
+});
+
 passport.use(
     new GoogleStrategy({
     //options for google strategy
@@ -18,7 +29,8 @@ passport.use(
     .then((currentUser) => {
         if(currentUser) {
             // user already registered
-            console.log('user exists: ' + currentUser)
+            console.log('user already registered: ' + currentUser)
+            done(null, currentUser)
         } else {
             // create new user
             new User({
@@ -28,6 +40,7 @@ passport.use(
             .save()
             .then((newUser) => {
                 console.log('new user created: ' + newUser)
+                done(null, newUser)
             })
         }
     })
